@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+"http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+
+	<form-beans>
+		<form-bean name="boardForm" type="com.board.BoardForm"></form-bean>
+	</form-beans>
+
+	<action-mappings>
+		<action path="/bbs" type="com.board.BoardAction" name="boardForm" 
+			scope="request" parameter="method">
+			<!-- 사용자가 너한테 method라는 이름의 변수를 줄거야. 그거 읽어내 -->
+			<forward name="created" path="/board/created.jsp"></forward>
+			<!-- 읽어낸 것이 created면 path 주소로 가라 -->
+		</action>
+	
+	
+	
+	</action-mappings>
+</struts-config>

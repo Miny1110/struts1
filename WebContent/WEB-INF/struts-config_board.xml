@@ -13,8 +13,10 @@
 		<action path="/bbs" type="com.board.BoardAction" name="boardForm" 
 			scope="request" parameter="method">
 			<!-- 사용자가 너한테 method라는 이름의 변수를 줄거야. 그거 읽어내 -->
-			<forward name="created" path="/board/created.jsp"></forward>
+			<forward name="created" path="/board/created.jsp"/>
 			<!-- 읽어낸 것이 created면 path 주소로 가라 -->
+			<forward name="created_ok" redirect="true" path="/bbs.do?method=list"/>
+			<forward name="list" path="/board/list.jsp"/>
 		</action>
 	
 	

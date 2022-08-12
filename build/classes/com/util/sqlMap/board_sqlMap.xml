@@ -101,8 +101,10 @@
 
 
 
-
-
+<!-- 삭제 -->
+<delete id="deleteData" parameterClass="int">
+	delete board where num=#num#
+</delete>
 
 
 

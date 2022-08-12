@@ -3,6 +3,7 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -97,7 +98,7 @@
 			<dl>
 				<dt>제목</dt>
 				<dd>
-					<input type="text" name="subject" size="60" maxlength="100" class="boxTF"/>
+					<input type="text" name="subject" size="60" maxlength="100" class="boxTF" value="${dto.subject }"/>
 				</dd>
 			</dl>
 		</div>
@@ -127,7 +128,7 @@
 			<dl>
 				<dt>내용</dt>
 				<dd>
-					<textarea rows="12" cols="63" name="content" class="boxTA" value="${dto.content }"></textarea>
+					<textarea rows="12" cols="63" name="content" class="boxTA" >${dto.content }</textarea>
 				</dd>
 			</dl>
 		</div>
@@ -151,10 +152,19 @@
 		
 		<input type="hidden" name="mode" value="${mode }">
 	
+	<c:if test="${mode=='insert' }">
 		<input type="hidden" name="method" value="created_ok">
 		<input type="button" value=" 등록하기 " class="btn2" onclick="sendIt();">
 		<input type="reset" value=" 다시입력 " class="btn2" onclick="document.myForm.subject.focus();">
 		<input type="button" value=" 작성취소 " class="btn2" onclick="javascript:location.href='<%=cp%>/bbs.do?method=list';">
+	</c:if>
+	
+	<c:if test="${mode=='update' }">
+		<input type="hidden" name="method" value="created_ok">
+		<input type="button" value=" 수정하기 " class="btn2" onclick="sendIt();">
+		<input type="button" value=" 수정취소 " class="btn2" 
+		onclick="javascript:location.href='<%=cp%>/bbs.do?method=list?pageNum=${pageNum }';">
+	</c:if>
 	</div>
 
 	</form>

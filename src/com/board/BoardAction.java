@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -71,6 +72,17 @@ public class BoardAction extends DispatchAction {
 		
 		}else { //update
 			
+			String pageNum = request.getParameter("pageNum");
+			//num은 dto에 들어있으니까 form을 통해서 들어온다.
+			//그래서 따로 받을 필요가 없다. pageNum만 받으면 된다.
+			
+			dao.updateData("bbs.updateData", f);
+			
+			ActionForward af = new ActionForward();
+			af.setRedirect(true);
+			af.setPath("/bbs.do?method=list&pageNum=" + pageNum);
+			
+			return af;
 		}
 		
 		dao = null;
@@ -93,6 +105,13 @@ public class BoardAction extends DispatchAction {
 		String pageNum = request.getParameter("pageNum");
 		
 		int currentPage = 1;
+		
+		HttpSession session = request.getSession();
+		
+		if(pageNum==null) {
+			pageNum = (String)session.getAttribute("pageNum");
+		}
+		session.removeAttribute("pageNum");
 		
 		if(pageNum!=null) {
 			currentPage = Integer.parseInt(pageNum);
@@ -180,7 +199,7 @@ public class BoardAction extends DispatchAction {
 		}
 		
 		//조회수증가
-		dao.updateData("bbs/hitCountUpdate", num);
+		dao.updateData("bbs.hitCountUpdate", num);
 		
 		
 		//해당 데이터 가져오기
@@ -221,7 +240,7 @@ public class BoardAction extends DispatchAction {
 		}
 		
 		
-		String urlList = cp + "/bbs.do?method=list&pageNum" + pageNum;
+		String urlList = cp + "/bbs.do?method=list&pageNum=" + pageNum;
 
 		if(!searchValue.equals("")) {
 			searchValue = URLEncoder.encode(searchValue,"UTF-8");
@@ -252,7 +271,7 @@ public class BoardAction extends DispatchAction {
 		
 		
 		//수정과 삭제에서 사용할 인수
-		String paramArticle = "num=" + num + "&pageNum =" + pageNum;
+		String paramArticle = "num=" + num + "&pageNum=" + pageNum;
 		
 		request.setAttribute("dto", dto);
 		request.setAttribute("preSubject", preSubject);
@@ -271,29 +290,27 @@ public class BoardAction extends DispatchAction {
 		
 		
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public ActionForward deleted(ActionMapping mapping, ActionForm form, 
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		CommonDAO dao = CommonDAOImpl.getInstance();
+		
+		int num = Integer.parseInt(request.getParameter("num"));
+		String pageNum = request.getParameter("pageNum");
+		
+		dao.deleteData("bbs.deleteData", num);
+		
+		/*HttpSession session = request.getSession();
+		session.setAttribute("pageNum", pageNum);*/
+		
+		ActionForward af = new ActionForward();
+		af.setRedirect(true);
+		af.setPath("/bbs.do?method=list&pageNum=" + pageNum);
+		
+		//return mapping.findForward("deleted");
+		return af;
+		
+	}
 	
 	
 	

@@ -65,6 +65,17 @@
 
 
 <!-- 이전글  / 다음글 구하기-->
+
+<!-- 
+[이전글, 다음글 구하는 공식]
+현재 내가 보고있는 게시글의 num보다 큰 숫자들을 asc한다.
+글이 총 10개고 내가 현재 게시글이 7번이라고 하면, 위쪽 글들을 asc하면 8 9 10 순서다.
+이 중에서 첫번째 숫자를 뽑으면 다음글이 된다.
+현재 내가 보고있는 게시글의 num보다 작은 숫자들을 desc한다.
+글이 총 10개고 내가 현재 게시글이 7번이라고 하면, 아래쪽 글들을 desc하면 6 5 4 3 2 1 순서다.
+이 중에서 첫번째 순서를 뽑으면 이전글이 된다.
+ -->
+ 
 <select id="preReadData" resultClass="com.board.BoardForm" parameterClass="map">
 <!-- 검색을 했을 경우도 고려해야 하기 때문에 searchKey, searchValue가 있는 map으로 한다. -->
 	select data.* from (

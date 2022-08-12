@@ -7,16 +7,18 @@
 
 	<form-beans>
 		<form-bean name="boardForm" type="com.board.BoardForm"></form-bean>
+		<!-- 처음에는 널값이 들어있을 것 -->
 	</form-beans>
 
 	<action-mappings>
-		<action path="/bbs" type="com.board.BoardAction" name="boardForm" 
-			scope="request" parameter="method">
+		<action path="/bbs" type="com.board.BoardAction" 
+		name="boardForm" scope="request" parameter="method">
 			<!-- 사용자가 너한테 method라는 이름의 변수를 줄거야. 그거 읽어내 -->
 			<forward name="created" path="/board/created.jsp"/>
 			<!-- 읽어낸 것이 created면 path 주소로 가라 -->
 			<forward name="created_ok" redirect="true" path="/bbs.do?method=list"/>
 			<forward name="list" path="/board/list.jsp"/>
+			<forward name="article" path="/board/article.jsp"/>
 		</action>
 	
 	

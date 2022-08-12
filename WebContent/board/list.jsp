@@ -3,6 +3,7 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,6 +12,18 @@
 
 <link rel="stylesheet" type="text/css" href="<%=cp%>/board/css/style.css"/>
 <link rel="stylesheet" type="text/css" href="<%=cp%>/board/css/list.css"/>
+
+<script type="text/javascript">
+
+	function searchData() {
+
+		var f = document.searchForm;
+		
+		f.action = "<%=cp%>/bbs.do?method=list";
+		f.submit();
+	}
+
+</script>
 
 </head>
 <body>
@@ -30,12 +43,12 @@
 					<option value="content">내용</option>
 				</select>
 				<input type="text" name="searchValue" class="textField">
-				<input type="button" value=" 검 색 " class="btn2" onclick=""/>
+				<input type="button" value=" 검 색 " class="btn2" onclick="searchData();"/>
 			</form>
 		</div>
 	
 		<div id="rightHeader">
-			<input type="button" value=" 글올리기 " class="btn2" onclick="javascript:location.href='<%=cp%>/board/created.jsp';"/>
+			<input type="button" value=" 글올리기 " class="btn2" onclick="location.href='<%=cp%>/bbs.do?method=created';"/>
 		</div>
 		
 	</div>
@@ -51,19 +64,26 @@
 			</dl>
 		</div>
 		
-		<div>
+		<div id="lists">
+			<c:forEach var="dto" items="${lists}">
 			<dl>
-				<dd class="num">1</dd>
-				<dd class="subject">게시판만들기</dd>
-				<dd class="name">배수지</dd>
-				<dd class="created">2021-07-21</dd>
-				<dd class="hitCount">10</dd>
+				<dd class="num">${dto.num }</dd>
+				<dd class="subject"><a href="${urlArticle }&num=${dto.num }">${dto.subject }</a></dd>
+				<dd class="name">${dto.name }</dd>
+				<dd class="created">${dto.created }</dd>
+				<dd class="hitCount">${dto.hitCount }</dd>
 			</dl>
+			</c:forEach>
 		</div>
 		
 		<div id="footer">
 			<p>
-			1 2 3
+				<c:if test="${totalDataCount!=0 }">
+					${pageIndexList }
+				</c:if>
+				<c:if test="${totalDataCount==0 }">
+					등록된 게시물이 없습니다.
+				</c:if>				
 			</p>
 		</div>
 		

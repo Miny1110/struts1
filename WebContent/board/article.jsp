@@ -3,6 +3,7 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -29,18 +30,18 @@
 		<div class="bbsArticle_bottomLine">
 			<dl>
 				<dt>작성자</dt>
-				<dd>김도빈</dd>				
+				<dd>${dto.name }</dd>				
 				<dt>줄수</dt>
-				<dd>10</dd>				
+				<dd>${lineSu }</dd>				
 			</dl>
 		</div>
 
 		<div class="bbsArticle_bottomLine">
 			<dl>
 				<dt>등록일</dt>
-				<dd>2022-07-21</dd>				
+				<dd>${dto.created }</dd>				
 				<dt>조회수</dt>
-				<dd>20</dd>				
+				<dd>${dto.hitCount }</dd>				
 			</dl>
 		</div>
 		
@@ -48,25 +49,43 @@
 			<table width="600" border="0">
 			<tr>
 				<td style="padding: 20px 80px 20px 62px;" valign="top" height="200"> 
-				게시글 내용
+				${dto.content }
 				</td>
 			</tr>
 			</table>
 		</div>
+		
+		<div class="bbsArticle_bottemLine">
+			이전글: 
+			<c:if test="${!empty preUrl }">
+				<a href="${preUrl }">${preSubject }</a>
+			</c:if>
+		</div>
+		
+				<div class="bbsArticle_noLine">
+			다음글: 
+			<c:if test="${!empty nextUrl }">
+				<a href="${nextUrl }">${nextSubject }</a>
+			</c:if>
+		</div>
+		
 	</div>
 	
 	<div class="bbsArticle_noLine" style="text-align: right;">
-	From : 127.0.0.1
+	From : ${dto.ipAddr }
 	</div>
 	
 	<div id="bbsArticle_footer">
 		<div id="leftFooter">
-			<input type="button" value="수정" class="btn2" onclick=""/>
-			<input type="button" value="삭제" class="btn2" onclick=""/>
+			<input type="button" value="수정" class="btn2" 
+			onclick="location.href='<%=cp%>/bbs.do?method=created&mode=update&${paramArticle }';"/>
+			<input type="button" value="삭제" class="btn2" 
+			onclick="location.href='<%=cp%>/bbs.do?method=deleted&${paramArticle }';"/>
 		</div>
 		
 		<div id="rightFooter">
-			<input type="button" value="리스트" class="btn2" onclick=""/>
+			<input type="button" value="리스트" class="btn2" 
+			onclick="location.href='${urlList}';"/>
 		</div>
 	</div>
 </div>

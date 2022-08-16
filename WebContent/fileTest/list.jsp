@@ -31,13 +31,13 @@
 <c:forEach var="dto" items="${lists }">
 <tr onmouseover="this.style.backgroundColor='#e4e4e4'" 
 onmouseout="this.style.backgroundColor=''" bgcolor="#ffffff">
-	<td width="50" align="center">${dto.num }</td>
+	<td width="50" align="center">${dto.listNum }</td>
 	<td width="200" align="left">${dto.subject }</td>
 	<td width="300" align="left">
 		<a href="${dto.urlFile }">${dto.originalFileName }</a>
 	</td>
 	<td width="50" align="center">
-		<a href="<%=cp%>/file.do?mehtod=delete_ok&num=${dto.num}">삭제</a>
+		<a href="<%=cp%>/file.do?method=delete_ok&num=${dto.num}">삭제</a>
 	</td>
 </tr>
 </c:forEach>

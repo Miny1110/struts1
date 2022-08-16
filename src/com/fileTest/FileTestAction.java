@@ -1,6 +1,7 @@
 package com.fileTest;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -144,6 +145,22 @@ public class FileTestAction extends DispatchAction{
 			HttpServletRequest request, HttpServletResponse response)
 					throws Exception {
 		
+		CommonDAO dao = CommonDAOImpl.getInstance();
+		HttpSession session = request.getSession();
+		String root = session.getServletContext().getRealPath("/");
+		String savePath = root + "pds" + File.separator + "saveFile";
+		
+		int num = Integer.parseInt(request.getParameter("num"));
+		
+		//하나의 데이터 읽어오기
+		FileTestForm dto = (FileTestForm)dao.getReadData("fileTest.readData",num);
+		
+		//파일삭제
+		FileManager.doFileDelete(dto.getSaveFileName(), savePath);
+		
+		//DB삭제
+		dao.deleteData("fileTest.deleteData", num);
+		
 		return mapping.findForward("delete_ok");
 	}	
 	
@@ -152,7 +169,31 @@ public class FileTestAction extends DispatchAction{
 			HttpServletRequest request, HttpServletResponse response)
 					throws Exception {
 		
-		//다운로드가 되어싿고 해서 창이 다른 곳으로 이동하면 안되기 때문에 null을 반환값으로 넣는다.
+		CommonDAO dao = CommonDAOImpl.getInstance();
+		HttpSession session = request.getSession();
+		String root = session.getServletContext().getRealPath("/");
+		String savePath = root + "pds" + File.separator + "saveFile";
+		
+		int num = Integer.parseInt(request.getParameter("num"));
+		
+		FileTestForm dto = (FileTestForm)dao.getReadData("fileTest.readData",num);
+		
+		boolean flag = FileManager.doFileDownload(response, dto.getSaveFileName(), 
+				dto.getOriginalFileName(), savePath);
+		
+		if(!flag) {
+			response.setContentType("text/html);charest=utf-8");
+			PrintWriter out = response.getWriter();
+			
+			out.print("<script type='text/javascript'>");
+			out.print("alert('다운로드 에러');");
+			out.print("history.back();");
+			out.print("</script>");
+		}
+		
+		
+		
+		//다운로드가 되었다고 해서 창이 다른 곳으로 이동하면 안되기 때문에 null을 반환값으로 넣는다.
 		return mapping.findForward(null);
 	}	
 	

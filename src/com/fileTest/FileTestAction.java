@@ -1,12 +1,19 @@
 package com.fileTest;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
+
+import com.util.FileManager;
+import com.util.dao.CommonDAO;
+import com.util.dao.CommonDAOImpl;
 
 public class FileTestAction extends DispatchAction{
 
@@ -23,7 +30,32 @@ public class FileTestAction extends DispatchAction{
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
+		
+		CommonDAO dao = CommonDAOImpl.getInstance();
+		
+		HttpSession session = request.getSession();
+		
+		String root = session.getServletContext().getRealPath("/");
+		
+		String savePath = root + "pds" + File.separator + "saveFile";
+		
+		FileTestForm f = (FileTestForm)form;
+		
+		//파일 업로드
+		String newFileName = FileManager.doFileUpload(f.getUpload(), savePath);
+		
+		if(newFileName!=null) {
+			int maxNum = dao.getIntValue("fileTest.maxNum");
+			
+			f.setNum(maxNum + 1);
+			f.setSaveFileName(newFileName);
+			f.setOriginalFileName(f.getUpload().getFileName());
+			
+			dao.insertData("fileTest.insertData", f);
+		}
+		
 		return mapping.findForward("write_ok");
+		
 	}	
 	
 	
